@@ -4,7 +4,7 @@ import { Role } from "./users.role.enum";
 export class CreateUserDto {
     @IsNotEmpty()
     @IsString()
-    @Length(11, 11)
+    @Length(11, 11, { message: "Tc numarasi 11 haneli olmalidir" })
     tc: string;
 
     @IsNotEmpty()
@@ -13,6 +13,6 @@ export class CreateUserDto {
     password: string;
 
     @IsEnum(Role, { each: true })
-    roles:Role[];
+    roles: Role[];
 
 }
