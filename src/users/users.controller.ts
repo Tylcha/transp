@@ -15,8 +15,14 @@ export class UsersController {
     }
 
     @Get(":id")
-    async findOne(@Param("id") id: string):Promise<UsersEntity>{
-        const user = await this.usersService.findOneUser(+id);
-        return user;
+    async findOne(@Param("id") id: string): Promise<UsersEntity> {
+        const user = await this.usersService.findOneUser(+id); //idyi numbera ceviriyoruz.
+        return user; //kullanici nesnesini dondur
+    }
+
+    @Get()
+    async findAllForDate(): Promise<UsersEntity[]> {
+        const users = await this.usersService.findAllUser(); 
+        return users;
     }
 }

@@ -40,4 +40,12 @@ export class UsersService {
         }
         return user
     }
+    async findAllUser(): Promise<UsersEntity[]> {
+        const user = await this.usersRepository.find({
+            order: {
+                create_time: 'DESC', //yeni olusturulma tarihinden eskiye tam tersi ASC
+            }
+        });
+        return user
+    }
 }
