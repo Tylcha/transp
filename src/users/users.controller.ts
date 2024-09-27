@@ -2,6 +2,7 @@ import { Body, Controller, HttpCode, Post, Param, Get } from '@nestjs/common';
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./usersDto";
 import { UsersEntity } from "./users.entity";
+import { LoginUserDto } from './user.login.dto';
 
 @Controller('users')
 export class UsersController {
@@ -22,7 +23,17 @@ export class UsersController {
 
     @Get()
     async findAllForDate(): Promise<UsersEntity[]> {
-        const users = await this.usersService.findAllUser(); 
+        const users = await this.usersService.findAllUser();
         return users;
+    }
+
+    @Post('login')
+    async login(@Body() loginUserDto: LoginUserDto) {
+        const user = await this.usersService.loginFind(loginUserDto);
+        if (user) {
+            return { message: "Login successful", user }
+        } else {
+            return { message: "Login failed" }
+        }
     }
 }

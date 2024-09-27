@@ -3,7 +3,8 @@ import { CreateUserDto } from "./usersDto";
 import { UsersEntity } from "./users.entity";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NotFoundError } from 'rxjs';
+
+import { LoginUserDto } from "./user.login.dto";
 
 @Injectable()
 export class UsersService {
@@ -47,5 +48,13 @@ export class UsersService {
             }
         });
         return user
+    }
+    async loginFind(loginUserDto: LoginUserDto): Promise<UsersEntity> {
+        const {tc,password} = loginUserDto;
+        const user = await this.usersRepository.findOne({where:{tc}})
+        if (user && user.password === password) {
+            return user;
+        }
+        return null;
     }
 }
