@@ -31,7 +31,7 @@ export class UsersController {
     async login(@Body() loginUserDto: LoginUserDto) {
         const user = await this.usersService.loginFind(loginUserDto);
         if (user) {
-            return { message: "Login successful", user }
+            return { message: "Login successful", user, accessToken:user.accessToken }
         } else {
             return { message: "Login failed" }
         }
