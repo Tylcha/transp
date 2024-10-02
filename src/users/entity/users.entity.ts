@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Role } from "../enum/users.role.enum";
+import { Exclude } from "class-transformer";
 
 @Entity('users')
 export class UsersEntity {
@@ -9,6 +10,7 @@ export class UsersEntity {
     @Column({ nullable: false, unique: true })
     tc: string;
 
+    @Exclude()
     @Column({ nullable: false, unique: true })
     password: string;
 
@@ -22,4 +24,10 @@ export class UsersEntity {
 
     @Column('simple-array', { nullable: false })
     position: Role[];
+
+    //dont show password
+    //https://docs.nestjs.com/techniques/serialization
+    constructor(partial: Partial<UsersEntity>) {
+        Object.assign(this, partial);
+    }
 }
