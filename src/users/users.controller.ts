@@ -1,8 +1,8 @@
-import { Body, Controller, HttpCode, Post, Param, Get, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Param, Get, ParseIntPipe, ValidationPipe } from '@nestjs/common';
 import { UsersService } from "./users.service";
-import { CreateUserDto } from "./usersDto";
-import { UsersEntity } from "./users.entity";
-import { LoginUserDto } from './user.login.dto';
+import { CreateUserDto } from "./dto/usersDto";
+import { UsersEntity } from "./entity/users.entity";
+import { LoginUserDto } from './dto/user.login.dto';
 
 @Controller('users')
 export class UsersController {
@@ -10,7 +10,7 @@ export class UsersController {
 
     @Post()
     @HttpCode(201)
-    async create(@Body() createUserDto: CreateUserDto): Promise<UsersEntity> {
+    async create(@Body(ValidationPipe) createUserDto: CreateUserDto): Promise<UsersEntity> {
         return this.usersService.createUser(createUserDto);
 
     }
@@ -28,10 +28,10 @@ export class UsersController {
     }
 
     @Post('login')
-    async login(@Body() loginUserDto: LoginUserDto) {
+    async login(@Body(ValidationPipe) loginUserDto: LoginUserDto) {
         const user = await this.usersService.loginFind(loginUserDto);
         if (user) {
-            return { message: "Login successful", user, accessToken:user.accessToken }
+            return { message: "Login successful", user }
         } else {
             return { message: "Login failed" }
         }

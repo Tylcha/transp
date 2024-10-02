@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from "./usersDto";
-import { UsersEntity } from "./users.entity";
+import { CreateUserDto } from "./dto/usersDto";
+import { UsersEntity } from "./entity/users.entity";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { LoginUserDto } from "./user.login.dto";
+import { LoginUserDto } from "./dto/user.login.dto";
 
 import { JwtService } from '@nestjs/jwt'
 
@@ -21,11 +21,6 @@ export class UsersService {
         // console.log("tc", createUserDto.tc);
         // console.log("pass", createUserDto.password);
         // console.log("rol", createUserDto.roles);
-
-        //Tc control
-        if (createUserDto.tc.length < 11) {
-            throw new BadRequestException("Tc 11 haneli olmalidir.")
-        }
 
         //Create Database
         const user = this.usersRepository.create({
