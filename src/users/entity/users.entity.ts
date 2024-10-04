@@ -8,11 +8,14 @@ export class UsersEntity {
     id: number;
 
     @Column({ nullable: false, unique: true })
-    tc: string;
+    user_name: string;
 
     @Exclude()
     @Column({ nullable: false, unique: true })
     password: string;
+
+    @Column({ nullable: false })
+    full_name: string
 
     //create time
     @Column('datetime')

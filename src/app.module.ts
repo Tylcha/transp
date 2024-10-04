@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module'; // UsersModule import edildi
 import { UsersEntity } from './users/entity/users.entity';
 import { JwtModule } from '@nestjs/jwt'
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -19,7 +20,8 @@ import { JwtModule } from '@nestjs/jwt'
       entities: [UsersEntity],
       synchronize: true,
     }),
-    UsersModule, // UsersModule burada eklendi
+    UsersModule,
+    AuthModule, // UsersModule burada eklendi
   ],
   controllers: [AppController],
   providers: [AppService],

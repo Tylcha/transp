@@ -4,16 +4,15 @@ import { UsersEntity } from "./entity/users.entity";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { LoginUserDto } from "./dto/user.login.dto";
+import { LoginUserDto } from "../auth/dto/user.login.dto";
 
-import { JwtService } from '@nestjs/jwt'
+
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(UsersEntity)
         private readonly usersRepository: Repository<UsersEntity>,
-        private jwtService: JwtService,
     ) { }
     async createUser(createUserDto: CreateUserDto): Promise<UsersEntity> {
 
@@ -24,7 +23,8 @@ export class UsersService {
 
         //Create Database
         const user = this.usersRepository.create({
-            tc: createUserDto.tc,
+            user_name: createUserDto.user_name,
+            full_name:createUserDto.full_name,
             password: createUserDto.password,
             create_time: new Date(),
             position: createUserDto.roles
@@ -39,6 +39,7 @@ export class UsersService {
         }
         return user
     }
+    
     async findAllUser(): Promise<UsersEntity[]> {
         const user = await this.usersRepository.find({
             order: {
@@ -46,21 +47,5 @@ export class UsersService {
             }
         });
         return user
-    }
-    async loginFind(loginUserDto: LoginUserDto): Promise<{ user: UsersEntity, accessToken: string } | null> {
-        const { tc, password } = loginUserDto;
-        const user = await this.usersRepository.findOne({ where: { tc } });
-
-        if (user && user.password === password) {
-            const payload = { sub: user.id, username: user.id, userrole: user.position };
-
-            // JWT token oluşturma
-            const accessToken = await this.jwtService.signAsync(payload);
-
-            // Hem kullanıcıyı hem de token'ı döndür
-            return { user, accessToken };
-        }
-
-        return null;
     }
 }
