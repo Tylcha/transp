@@ -4,7 +4,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module'; // UsersModule import edildi
 import { UsersEntity } from './users/entity/users.entity';
-import { JwtModule } from '@nestjs/jwt'
 import { AuthModule } from './auth/auth.module';
 
 

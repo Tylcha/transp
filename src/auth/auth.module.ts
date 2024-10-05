@@ -10,8 +10,9 @@ import { UsersEntity } from '../users/entity/users.entity';
   imports: [
     TypeOrmModule.forFeature([UsersEntity]),
     JwtModule.register({
+        global:true, //cok onemli yoksa dependency atip duruyor
         secret: "Secret", //secret key duzenlenicek sonra
-        signOptions: { expiresIn: "60s" },// token gecerlilik suresi
+        signOptions: { expiresIn: "30s" },// token gecerlilik suresi
     }),
     UsersModule,
 ],

@@ -1,8 +1,9 @@
-import { Body, Controller, HttpCode, Post, Param, Get, ParseIntPipe, ValidationPipe, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Param, Get, ParseIntPipe, ValidationPipe, UseInterceptors, ClassSerializerInterceptor, UseGuards } from '@nestjs/common';
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/usersDto";
 import { UsersEntity } from "./entity/users.entity";
-import { LoginUserDto } from '../auth/dto/user.login.dto';
+import { AuthGuard } from 'src/auth/authGuard';
+
 
 @Controller('users')
 export class UsersController {
@@ -10,12 +11,14 @@ export class UsersController {
 
     @Post()
     @HttpCode(201)
+    @UseGuards(AuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     async create(@Body(ValidationPipe) createUserDto: CreateUserDto): Promise<UsersEntity> {
         return this.usersService.createUser(createUserDto);
 
     }
 
+    @UseGuards(AuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Get(":id")
     async findOne(@Param("id", ParseIntPipe) id: string): Promise<UsersEntity> {
@@ -23,6 +26,7 @@ export class UsersController {
         return user; //kullanici nesnesini dondur
     }
 
+    @UseGuards(AuthGuard)
     @UseInterceptors(ClassSerializerInterceptor) //dont show password
     @Get()
     async findAllForDate(): Promise<UsersEntity[]> {

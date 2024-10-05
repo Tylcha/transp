@@ -1,5 +1,4 @@
 import { Body, ClassSerializerInterceptor, Controller, Get, Post, UseGuards, UseInterceptors, ValidationPipe, Request } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt'
 import { LoginUserDto } from './dto/user.login.dto';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './authGuard';
