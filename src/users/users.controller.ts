@@ -3,6 +3,9 @@ import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/usersDto";
 import { UsersEntity } from "./entity/users.entity";
 import { AuthGuard } from 'src/auth/authGuard';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from './enum/users.role.enum';
+import { RolesGuard } from 'src/auth/rolesGuard';
 
 
 @Controller('users')
@@ -11,14 +14,15 @@ export class UsersController {
 
     @Post()
     @HttpCode(201)
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(Role.Chief, Role.Hr)
     @UseInterceptors(ClassSerializerInterceptor)
     async create(@Body(ValidationPipe) createUserDto: CreateUserDto): Promise<UsersEntity> {
         return this.usersService.createUser(createUserDto);
 
     }
 
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, RolesGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Get(":id")
     async findOne(@Param("id", ParseIntPipe) id: string): Promise<UsersEntity> {
@@ -26,7 +30,8 @@ export class UsersController {
         return user; //kullanici nesnesini dondur
     }
 
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(Role.Chief, Role.Hr)
     @UseInterceptors(ClassSerializerInterceptor) //dont show password
     @Get()
     async findAllForDate(): Promise<UsersEntity[]> {
